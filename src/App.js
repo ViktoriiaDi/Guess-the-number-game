@@ -9,20 +9,21 @@ function App() {
   const [attempts, setAttempts] = useState(0);
   const [history, setHistory] = useState([]);
   const [resetTimer, setResetTimer] = useState(false);
+  const [stopTimer, setStopTimer] = useState(false); 
 
   const checkGuess = () => {
+    if (stopTimer) return;
+
     const number = Number(guess);
 
     if (!number) {
       setMessage("Enter a number!");
       return;
     }
-
     if (number < 1 || number > 100) {
       setMessage("Number must be between 1 and 100!");
       return;
     }
-
     if (history.includes(number)) {
       setMessage("You already entered this number, try another!");
       return;
@@ -37,7 +38,7 @@ function App() {
       setMessage("Too small!");
     } else {
       setMessage("Correct! 🎉");
-      // Тут більше немає setStopTimer(true), тому таймер продовжить рахувати
+      setStopTimer(true); 
     }
 
     setGuess("");
@@ -49,15 +50,15 @@ function App() {
     setHistory([]);
     setGuess("");
     setMessage("New game started!");
-    setResetTimer(prev => !prev);
-    // Тут більше немає setStopTimer(false)
+    setResetTimer(prev => !prev); 
+    setStopTimer(false); 
   };
 
   return (
     <div className="App">
       <h1>Guess the Number</h1>
-      
-      <Timer reset={resetTimer} />
+
+      <Timer reset={resetTimer} stop={stopTimer} />
 
       <input
         type="number"
@@ -65,11 +66,12 @@ function App() {
         onChange={(e) => setGuess(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && checkGuess()}
         placeholder="Enter number"
+        disabled={stopTimer} 
       />
 
       <br />
 
-      <button onClick={checkGuess}>Check</button>
+      <button onClick={checkGuess} disabled={stopTimer}>Check</button>
       <button onClick={newGame}>New Game</button>
 
       <p>{message}</p>
