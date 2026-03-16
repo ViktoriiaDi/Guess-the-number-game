@@ -66,7 +66,9 @@ function App() {
 
  return (
    <div className="App">
+
      <h1>Guess the Number A-Dev</h1>
+
      <input
        type="number"
        value={guess}
