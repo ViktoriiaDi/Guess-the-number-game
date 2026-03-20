@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import Timer from "./Timer";
+// import Timer from "./Timer"; // Розкоментуй, якщо створиш файл Timer.js
 
 function App() {
   const [secretNumber, setSecretNumber] = useState(Math.floor(Math.random() * 100) + 1);
@@ -58,7 +58,7 @@ function App() {
     <div className="App">
       <h1>Guess the Number</h1>
 
-      <Timer reset={resetTimer} stop={stopTimer} />
+      {/* <Timer reset={resetTimer} stop={stopTimer} /> */}
 
       <input
         type="number"
@@ -72,50 +72,13 @@ function App() {
       <br />
 
       <button onClick={checkGuess} disabled={stopTimer}>Check</button>
-      <button onClick={newGame}>New Game</button>
+      <button onClick={newGame}>Again</button>
 
-<<<<<<< HEAD
-
- const newGame = () => {
-   setSecretNumber(Math.floor(Math.random() * 100) + 1);
-   setGuess("");
-   setMessage("New game started!");
-   setAttempts(0);
-   setHistory([]);
- };
-
-
- const handleKeyPress = (e) => {
-   if (e.key === "Enter") {
-     checkGuess();
-   }
- };
-
-
- return (
-   <div className="App">
-     <h1>Guess the Number B Dev</h1>
-     <input
-       type="number"
-       value={guess}
-       onChange={(e) => setGuess(e.target.value)}
-       onKeyPress={handleKeyPress}
-       placeholder="Enter a number 1-100"
-     />
-     <button onClick={checkGuess}>Check</button>
-     <button onClick={newGame}>New Game</button>
-     <p>{message}</p>
-     <p>Attempts: {attempts}</p>
-     <p>History: {history.join(", ")}</p>
-   </div>
- );
-=======
       <p>{message}</p>
       <p>Attempts: {attempts}</p>
       <p>History: {history.join(", ")}</p>
     </div>
   );
->>>>>>> ab036d2b4745827850a55063a4fc4cf304a26157
 }
 
 export default App;
