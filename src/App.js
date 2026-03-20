@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-// import Timer from "./Timer"; // Розкоментуй, якщо створиш файл Timer.js
+import Timer from "./Timer";
 
 function App() {
   const [secretNumber, setSecretNumber] = useState(Math.floor(Math.random() * 100) + 1);
