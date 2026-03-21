@@ -15,8 +15,11 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "react-scripts test --watchAll=false",
+    "eject": "react-scripts eject",
+    "test:coverage": "npm test -- --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:report": "playwright show-report"
   },
   "eslintConfig": {
     "extends": [
@@ -35,5 +38,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.5.0"
   }
 }
