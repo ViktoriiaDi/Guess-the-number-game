@@ -65,7 +65,7 @@ test('Виводить попередження, якщо введене чис�
     expect(screen.getByText(/Number must be between 1 and 100!/i)).toBeInTheDocument();
   });
 
-  test('Виводить попередження, якщо введене число більше 100', () => {
+  test('Виводить попередження, якщо введене число меньше 1', () => {
     render(<App />);
     const input = screen.getByPlaceholderText(/Enter number/i);
     const checkBtn = screen.getByRole('button', { name: /Check/i });

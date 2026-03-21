@@ -53,11 +53,12 @@ function App() {
     setResetTimer(prev => !prev); 
     setStopTimer(false); 
   };
-
+  
   return (
     <div className="App">
       <h1>Guess the Number</h1>
-
+      <p>Current Mode: {process.env.REACT_APP_STATUS}</p>
+      
       {<Timer reset={resetTimer} stop={stopTimer} /> }
 
       <input
