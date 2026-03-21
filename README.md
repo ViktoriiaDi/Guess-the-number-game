@@ -1,7 +1,7 @@
 # Guess the Number
 [![React CI/CD Case](https://github.com/ViktoriiaDi/Guess-the-number-game/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/ViktoriiaDi/Guess-the-number-game/actions/workflows/ci-cd.yml)
 
-Live demo: [https://guess-the-number-game-one-beta.vercel.app/]
+Live demo: [https://guess-the-number-game-one-beta.vercel.app/)
 ## Опис проекту (MVP)
 Це простий React-додаток, де користувач намагається вгадати випадкове число від 1 до 100. Гра веде історію спроб, повідомляє, чи число більше або менше, та попереджає, якщо число вже було введене або виходить за межі.
 
