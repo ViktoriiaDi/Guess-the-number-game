@@ -16,7 +16,7 @@ function App() {
 
     const number = Number(guess);
 
-    if (!numbe) {
+    if (!number) {
       setMessage("Enter a number!");
       return;
     }
