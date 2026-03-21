@@ -58,7 +58,7 @@ function App() {
     <div className="App">
       <h1>Guess the Number</h1>
 
-      {/* <Timer reset={resetTimer} stop={stopTimer} /> */}
+      {<Timer reset={resetTimer} stop={stopTimer} /> }
 
       <input
         type="number"
