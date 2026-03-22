@@ -1,6 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Timer from "./Timer";
+import posthog from 'posthog-js';
+
+posthog.init('phc_RfPydQBQG4tPixtYcL0DM23RfrXrWE01EGZsXFK4fPf', {
+    api_host: 'https://eu.posthog.com', 
+    person_profiles: 'identified_only', 
+});
 
 function App() {
   const [secretNumber, setSecretNumber] = useState(Math.floor(Math.random() * 100) + 1);
@@ -10,6 +16,18 @@ function App() {
   const [history, setHistory] = useState([]);
   const [resetTimer, setResetTimer] = useState(false);
   const [stopTimer, setStopTimer] = useState(false); 
+  const [showHint, setShowHint] = useState(false);
+  
+  useEffect(() => {
+    // Перевірка прапорця при завантаженні та змінах
+    posthog.onFeatureFlags(() => {
+      if (posthog.isFeatureEnabled('show-hint')) { 
+        setShowHint(true);
+      } else {
+        setShowHint(false);
+      }
+    });
+  }, []);
 
   const checkGuess = () => {
     if (stopTimer) return;
@@ -20,6 +38,13 @@ function App() {
       setMessage("Enter a number!");
       return;
     }
+
+    // 1. Подія: Спроба вгадати (guess_attempted)
+    posthog.capture('guess_attempted', {
+      value: number,
+      attempt_number: attempts + 1
+    });
+
     if (number < 1 || number > 100) {
       setMessage("Number must be between 1 and 100!");
       return;
@@ -39,12 +64,21 @@ function App() {
     } else {
       setMessage("Correct! 🎉");
       setStopTimer(true); 
+      // 2. Подія: Перемога (game_won)
+      posthog.capture('game_won', {
+        total_attempts: attempts + 1,
+        secret_number: secretNumber
+      });
     }
 
     setGuess("");
   };
 
   const newGame = () => {
+      // 3. Подія: Нова гра (game_reset / task_deleted аналог)
+      posthog.capture('game_reset', {
+        was_finished: stopTimer
+      });
     setSecretNumber(Math.floor(Math.random() * 100) + 1);
     setAttempts(0);
     setHistory([]);
@@ -58,7 +92,13 @@ function App() {
     <div className="App">
       <h1>Guess the Number</h1>
       <p>Current Mode: {process.env.REACT_APP_STATUS}</p>
-      
+
+      {showHint && (
+      <div style={{  padding: '10px', marginBottom: '10px', borderRadius: '5px' }}>
+          💡 Hint: The number is {secretNumber % 2 === 0 ? 'Even' : 'Odd'}
+        </div>
+        )}
+        
       {<Timer reset={resetTimer} stop={stopTimer} /> }
 
       <input
