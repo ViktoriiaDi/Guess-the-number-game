@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import * as Sentry from "@sentry/react";
 import "./App.css";
 import Timer from "./Timer";
 import posthog from 'posthog-js';
@@ -17,7 +18,7 @@ function App() {
   const [resetTimer, setResetTimer] = useState(false);
   const [stopTimer, setStopTimer] = useState(false); 
   const [showHint, setShowHint] = useState(false);
-  
+
   useEffect(() => {
     // Перевірка прапорця при завантаженні та змінах
     posthog.onFeatureFlags(() => {
@@ -29,11 +30,37 @@ function App() {
     });
   }, []);
 
+  const throwError = () => {
+    Sentry.addBreadcrumb({
+      category: "ui",
+      message: `User clicked the 'Break the world' button.`,
+      level: "info",
+    });
+    throw new Error("Sentry Test Error: Something went wrong!");
+  };
+  
+  useEffect(() => {
+  Sentry.setUser({
+    id: "viktoria_777",
+    email: "viktoria.dikhtiarenko.pp.2023@lpnu.ua",
+    username: "Viktoria",
+    segment: "premium_user" 
+  });
+
+  posthog.onFeatureFlags(() => {
+    if (posthog.isFeatureEnabled('show-hint')) { 
+      setShowHint(true);
+    } else {
+      setShowHint(false);
+    }
+  });
+}, []);
+
   const checkGuess = () => {
     if (stopTimer) return;
 
-    const number = Number(guess);
-
+  const number = Number(guess);
+    
     if (!number) {
       setMessage("Enter a number!");
       return;
@@ -118,6 +145,15 @@ function App() {
       <p>{message}</p>
       <p>Attempts: {attempts}</p>
       <p>History: {history.join(", ")}</p>
+
+      <div>
+        <button 
+          onClick={throwError} 
+          style={{ backgroundColor: '#ff4d4d', color: 'white', padding: '10px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+          Break the world 
+        </button>
+      </div>
+
     </div>
   );
 }
